@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rafo.weixin.mapper.game.TurnTableMapper" >
+  <resultMap id="BaseResultMap" type="com.rafo.weixin.model.game.TurnTable" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="playerId" property="playerid" jdbcType="VARCHAR" />
+    <result column="awardId" property="awardid" jdbcType="INTEGER" />
+    <result column="awardNum" property="awardnum" jdbcType="INTEGER" />
+    <result column="taskDone" property="taskdone" jdbcType="TINYINT" />
+    <result column="receive" property="receive" jdbcType="TINYINT" />
+    <result column="drawTime" property="drawtime" jdbcType="TIMESTAMP" />
+    <result column="receiveTime" property="receivetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, playerId, awardId, awardNum, taskDone, receive, drawTime, receiveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_turn_table
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTurnTable" resultMap="BaseResultMap" parameterType="com.rafo.weixin.model.game.TurnTable" >
+    select
+    <include refid="Base_Column_List" />
+    from tbl_turn_table
+    where 1=1
+    <if test="id != null" >
+    AND  id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="playerid != null" >
+      AND  playerId = #{playerid}
+    </if>
+    <if test="awardid != null" >
+      AND  awardId = #{awardid}
+    </if>
+    <if test="awardnum != null" >
+      AND awardNum = #{awardnum}
+    </if>
+    <if test="taskdone != null" >
+      AND  taskDone = #{taskdone}
+    </if>
+    <if test="receive != null" >
+      AND receive = #{receive}
+    </if>
+    <if test="drawtime != null" >
+      AND  DATE_FORMAT(drawTime, '%Y-%m-%d') = #{drawtime}
+    </if>
+    <if test="receivetime != null" >
+    AND DATE_FORMAT(receiveTime, '%Y-%m-%d') = #{receivetime}
+    </if>
+    <if test="startDrawtime != null" >
+      <![CDATA[  AND DATE_FORMAT(drawTime, '%Y-%m-%d') >= #{startDrawtime}]]>
+    </if>
+    <if test="endDrawtime != null" >
+     <![CDATA[ AND DATE_FORMAT(drawTime, '%Y-%m-%d') <= #{endDrawtime}]]>
+    </if>
+    <if test="startReceivetime != null" >
+    <![CDATA[  AND DATE_FORMAT(receiveTime, '%Y-%m-%d') >= #{startReceivetime}]]>
+    </if>
+    <if test="endReceivetime != null" >
+    <![CDATA[  AND DATE_FORMAT(receiveTime, '%Y-%m-%d') <= #{endReceivetime}]]>
+    </if>
+    ORDER BY  drawTime DESC
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from tbl_turn_table
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_turn_table
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.rafo.weixin.model.game.TurnTable" >
+    insert into tbl_turn_table (id, playerId, awardId, 
+      awardNum, taskDone, receive, 
+      drawTime, receiveTime)
+    values (#{id,jdbcType=VARCHAR}, #{playerid,jdbcType=VARCHAR}, #{awardid,jdbcType=INTEGER}, 
+      #{awardnum,jdbcType=INTEGER}, #{taskdone,jdbcType=TINYINT}, #{receive,jdbcType=TINYINT}, 
+      #{drawtime,jdbcType=TIMESTAMP}, #{receivetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rafo.weixin.model.game.TurnTable" >
+    insert into tbl_turn_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="playerid != null" >
+        playerId,
+      </if>
+      <if test="awardid != null" >
+        awardId,
+      </if>
+      <if test="awardnum != null" >
+        awardNum,
+      </if>
+      <if test="taskdone != null" >
+        taskDone,
+      </if>
+      <if test="receive != null" >
+        receive,
+      </if>
+      <if test="drawtime != null" >
+        drawTime,
+      </if>
+      <if test="receivetime != null" >
+        receiveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="playerid != null" >
+        #{playerid,jdbcType=VARCHAR},
+      </if>
+      <if test="awardid != null" >
+        #{awardid,jdbcType=INTEGER},
+      </if>
+      <if test="awardnum != null" >
+        #{awardnum,jdbcType=INTEGER},
+      </if>
+      <if test="taskdone != null" >
+        #{taskdone,jdbcType=TINYINT},
+      </if>
+      <if test="receive != null" >
+        #{receive,jdbcType=TINYINT},
+      </if>
+      <if test="drawtime != null" >
+        #{drawtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetime != null" >
+        #{receivetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rafo.weixin.model.game.TurnTable" >
+    update tbl_turn_table
+    <set >
+      <if test="playerid != null" >
+        playerId = #{playerid,jdbcType=VARCHAR},
+      </if>
+      <if test="awardid != null" >
+        awardId = #{awardid,jdbcType=INTEGER},
+      </if>
+      <if test="awardnum != null" >
+        awardNum = #{awardnum,jdbcType=INTEGER},
+      </if>
+      <if test="taskdone != null" >
+        taskDone = #{taskdone,jdbcType=TINYINT},
+      </if>
+      <if test="receive != null" >
+        receive = #{receive,jdbcType=TINYINT},
+      </if>
+      <if test="drawtime != null" >
+        drawTime = #{drawtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivetime != null" >
+        receiveTime = #{receivetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rafo.weixin.model.game.TurnTable" >
+    update tbl_turn_table
+    set playerId = #{playerid,jdbcType=VARCHAR},
+      awardId = #{awardid,jdbcType=INTEGER},
+      awardNum = #{awardnum,jdbcType=INTEGER},
+      taskDone = #{taskdone,jdbcType=TINYINT},
+      receive = #{receive,jdbcType=TINYINT},
+      drawTime = #{drawtime,jdbcType=TIMESTAMP},
+      receiveTime = #{receivetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <update id="updateReceive"  >
+        update tbl_turn_table
+        set
+        receive = #{receive,jdbcType=TINYINT},
+        receiveTime = #{receivetime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>
